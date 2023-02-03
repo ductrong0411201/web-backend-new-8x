@@ -9,7 +9,7 @@ use App\Http\Requests\Api\Order\UpdateOrderRequest;
 use App\Models\Asset\Construction;
 use App\Models\Asset\Order;
 use App\Models\Asset\Project;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Dingo\Api\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -176,7 +176,7 @@ class OrderController extends Controller
         $orderDate->addMinute(330);
         $order['ORDER_DATE'] = $orderDate->toDateTimeString();
         $orderName = trim(preg_replace('/\r\n|\r|\n/', ' ', $order['name']));
-        $pdf = PDF::loadView('pdf.order-report', $order);
+        $pdf = Pdf::loadView('pdf.geotagged-report', $order);
         return $pdf->download("geotagged-report.pdf");
     }
 
@@ -242,7 +242,7 @@ class OrderController extends Controller
         $project['lng_dms'] = $this->lngDECtoDMS($project['longitude']);
 //        return view('pdf.summary-report', $project);
         $pdf = PDF::loadView('pdf.summary-report', $project);
-        return $pdf->download("Project Report MIS.pdf");
+        return $pdf->download("Project-Report-MIS.pdf");
     }
 
     public function mapPhysical($report) {

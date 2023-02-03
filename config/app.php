@@ -177,7 +177,7 @@ return [
         // Phaza\LaravelPostgis\DatabaseServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         // Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
-        // Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -256,7 +256,7 @@ return [
         'APIRoute' => Dingo\Api\Facade\Route::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
     ],
 
 ];
