@@ -11,6 +11,7 @@
         "php": "^7.3",
         "arcanedev/log-viewer": "*",
         "arcanedev/no-captcha": "*",
+        "barryvdh/laravel-dompdf": "^2.0",
         "dingo/api": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
