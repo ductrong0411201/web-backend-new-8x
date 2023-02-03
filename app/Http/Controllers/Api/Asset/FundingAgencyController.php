@@ -59,7 +59,8 @@ class FundingAgencyController extends ApiServiceController
             abort(401, 'Source of Funding has been used by project MIS!');
         }
 
-        FundingGroup::query()->findOrFail($id)->delete();
+        FundingAgency::query()->findOrFail($id)->delete();
+        abort(200, 'Success');
 
     }
 

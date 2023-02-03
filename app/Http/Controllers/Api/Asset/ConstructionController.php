@@ -204,8 +204,8 @@ class ConstructionController extends ApiServiceController
     {
         $lat = $request->get('latitude');
         $lng = $request->get('longitude');
-        $query = Area::query()->get();
-        $query->selectRaw('gid, name , dist_name, state_name')->orderBy('name', 'asc')->get();
+        $query = Area::query();
+        $query->selectRaw('gid, name , dist_name, state_name')->orderBy('name', 'asc');
         $query->whereRaw("ST_Within(ST_SetSRID(ST_Point($lng, $lat), 4326), ST_SetSRID(geom, 4326))");
         $data = $query->first();
 
