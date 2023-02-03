@@ -9,32 +9,32 @@ $api->group(['namespace' => 'Asset', 'as' => 'api.asset.'], function ($api) {
     $api->post('test', 'ConstructionController@addNewGeometry');
 
     $api->get('mobile/version', 'ConstructionController@appVersion');
-    $api->get('public_projects', 'PublicProjectController@index');
-    $api->get('public_projects/{id}', 'PublicProjectController@show');
+    $api->get('public_projects', 'PublicProjectController@index'); // ok
+    $api->get('public_projects/{id}', 'PublicProjectController@show'); //ok
     $api->post('projects/upload/image', 'ProjectController@uploadImage');
     $api->post('projects/upload/document', 'ProjectController@uploadDoc');
-    $api->get('departments', 'DepartmentController@index');
+    $api->get('departments', 'DepartmentController@index'); // ok
 
     $api->group(['middleware' => 'api.auth'], function ($api) {
         $api->get('constructions', 'ConstructionController@mobileIndex');
-        $api->get('webconstructions', 'ConstructionController@index');
-        $api->get('constructions/{id}', 'ConstructionController@show');
-        $api->delete('constructions/{id}', 'ConstructionController@delete');
-        $api->get('structures', 'StructureController@index');
-        $api->get('funding_agencies', 'FundingAgencyController@index');
-        $api->post('funding_agencies', 'FundingAgencyController@store');
+        $api->get('webconstructions', 'ConstructionController@index'); // ok
+        $api->get('constructions/{id}', 'ConstructionController@show'); // ok
+        $api->delete('constructions/{id}', 'ConstructionController@delete'); //ok
+        $api->get('structures', 'StructureController@index'); // ok
+        $api->get('funding_agencies', 'FundingAgencyController@index'); //ok
+        $api->post('funding_agencies', 'FundingAgencyController@store');//
         $api->delete('funding_agencies/{id}', 'FundingAgencyController@destroy');
-        $api->put('funding_agencies/{id}', 'FundingAgencyController@update');
-        $api->get('funding_sources', 'FundingAgencyController@getFundingSources');
-        $api->get('legends', 'ConstructionController@getLegends');
+        $api->put('funding_agencies/{id}', 'FundingAgencyController@update');///
+        $api->get('funding_sources', 'FundingAgencyController@getFundingSources'); //
+        $api->get('legends', 'ConstructionController@getLegends');//
 
         $api->get('orders', 'OrderController@index');
         $api->get('orders/{id}', 'OrderController@show');
         $api->delete('orders/{id}', 'OrderController@destroy');
         $api->put('orders/{id}', 'OrderController@update');
 
-        $api->get('reversegeocode', 'ConstructionController@reverseGeocode');
-        $api->get('v1/reversegeocode', 'ConstructionController@reverseGeocodeNew');
+        $api->get('reversegeocode', 'ConstructionController@reverseGeocode'); // fix
+        $api->get('v1/reversegeocode', 'ConstructionController@reverseGeocodeNew'); // fix
         $api->get('work_orders', 'OrderController@getOrders');
         $api->get('districts', 'ConstructionController@getDistricts');
         $api->get('circles/{district}', 'ConstructionController@getCircles');
