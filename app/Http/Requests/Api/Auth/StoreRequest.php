@@ -29,8 +29,8 @@ class StoreRequest extends FormRequest
             'mobile' => ['required', 'string', 'max:11', 'min:10', Rule::unique('users')],
             'email' => ['string', 'email', 'max:64', Rule::unique('users')],
             'password' => 'required|string|min:6|confirmed',
-            'district' => ['string','max:64', 'min:1', Rule::exists('areas', 'dist_name')],
-            'department_id'=> ['numeric', Rule::exists('departments', 'id')],
+            'district' => ['string', 'max:64', 'min:1', Rule::exists('areas', 'dist_name')],
+            'department_id' => ['numeric', Rule::exists('departments', 'id')],
         ];
     }
 }
