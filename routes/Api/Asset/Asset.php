@@ -5,28 +5,28 @@ $api->get('mobile/version', 'ConstructionController@appVersion');
 
 $api->group(['namespace' => 'Asset', 'as' => 'api.asset.'], function ($api) {
 
-    $api->get('test/{id}', 'ConstructionController@getGeometry'); #dùng tạm -----------------------------------------
+    $api->get('test/{id}', 'ConstructionController@getGeometry'); #dùng tạm ------------
     $api->post('test', 'ConstructionController@addNewGeometry');
 
     $api->get('mobile/version', 'ConstructionController@appVersion');
-    $api->get('public_projects', 'PublicProjectController@index'); // ok
-    $api->get('public_projects/{id}', 'PublicProjectController@show'); //ok
+    $api->get('public_projects', 'PublicProjectController@index');
+    $api->get('public_projects/{id}', 'PublicProjectController@show');
     $api->post('projects/upload/image', 'ProjectController@uploadImage');
     $api->post('projects/upload/document', 'ProjectController@uploadDoc');
-    $api->get('departments', 'DepartmentController@index'); // ok
+    $api->get('departments', 'DepartmentController@index');
 
     $api->group(['middleware' => 'api.auth'], function ($api) {
         $api->get('constructions', 'ConstructionController@mobileIndex');
-        $api->get('webconstructions', 'ConstructionController@index'); // ok
-        $api->get('constructions/{id}', 'ConstructionController@show'); // ok
-        $api->delete('constructions/{id}', 'ConstructionController@delete'); //ok
-        $api->get('structures', 'StructureController@index'); // ok
-        $api->get('funding_agencies', 'FundingAgencyController@index'); //ok
-        $api->post('funding_agencies', 'FundingAgencyController@store');//
+        $api->get('webconstructions', 'ConstructionController@index');
+        $api->get('constructions/{id}', 'ConstructionController@show');
+        $api->delete('constructions/{id}', 'ConstructionController@delete');
+        $api->get('structures', 'StructureController@index');
+        $api->get('funding_agencies', 'FundingAgencyController@index');
+        $api->post('funding_agencies', 'FundingAgencyController@store');
         $api->delete('funding_agencies/{id}', 'FundingAgencyController@destroy');
-        $api->put('funding_agencies/{id}', 'FundingAgencyController@update');///
-        $api->get('funding_sources', 'FundingAgencyController@getFundingSources'); //
-        $api->get('legends', 'ConstructionController@getLegends');//
+        $api->put('funding_agencies/{id}', 'FundingAgencyController@update');
+        $api->get('funding_sources', 'FundingAgencyController@getFundingSources');
+        $api->get('legends', 'ConstructionController@getLegends');
 
         $api->get('orders', 'OrderController@index');
         $api->get('orders/{id}', 'OrderController@show');
