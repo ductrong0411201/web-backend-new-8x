@@ -172,8 +172,6 @@ class ConstructionController extends ApiServiceController
         // $query = Construction::query();
         // $query->with(['department', 'orders.reports', 'funding_agency', 'area']);
 
-
-
         $query = Construction::query()->select('*', DB::raw("ST_AsGeoJSON(geom) as geom"));
         $query->with(['department', 'orders.reports', 'funding_agency', 'area']);
         return response()->json($query->findOrFail($id));

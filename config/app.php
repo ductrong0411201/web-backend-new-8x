@@ -165,8 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
-        // Arcanedev\LogViewer\LogViewerServiceProvider::class,
-        // Arcanedev\NoCaptcha\NoCaptchaServiceProvider::class,
+        Arcanedev\LogViewer\LogViewerServiceProvider::class,
+        Arcanedev\NoCaptcha\NoCaptchaServiceProvider::class,
         // Collective\Html\HtmlServiceProvider::class,
         // Creativeorange\Gravatar\GravatarServiceProvider::class,
         // DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
@@ -202,7 +202,7 @@ return [
     */
 
     'aliases' => [
-
+        // 'Active' => HieuLe\Active\Facades\Active::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -245,7 +245,7 @@ return [
         /*
          * Third Party Aliases
          */
-        'Active'      => HieuLe\Active\Facades\Active::class,
+        // 'Active'      => HieuLe\Active\Facades\Active::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
         'Captcha'     => Arcanedev\NoCaptcha\Facades\NoCaptcha::class,
         'Form'        => Collective\Html\FormFacade::class,
@@ -256,7 +256,7 @@ return [
         'APIRoute' => Dingo\Api\Facade\Route::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
     ],
 
 ];
