@@ -69,5 +69,4 @@ $api->group(['namespace' => 'Asset', 'as' => 'api.asset.'], function ($api) {
         $api->get('dashboard/districts', 'DashboardController@getDistricts');
         $api->get('dashboard/circles', 'DashboardController@getCircles');
     });
-
 });
