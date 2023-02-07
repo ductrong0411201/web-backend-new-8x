@@ -9,7 +9,7 @@ use App\Http\Requests\Api\Order\UpdateOrderRequest;
 use App\Models\Asset\Construction;
 use App\Models\Asset\Order;
 use App\Models\Asset\Project;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\PDF as PDF;
 use Carbon\Carbon;
 use Dingo\Api\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +46,6 @@ class OrderController extends Controller
                     $q->where('department_id', '=', $department_id);
                 });
             }
-
         } else if ($user->hasRole(2)) {
             $query->whereHas('construction', function ($q) use ($user) {
                 $q->where('department_id', '=', $user->department_id);
@@ -184,10 +183,12 @@ class OrderController extends Controller
     {
         $executive = $request->user();
         $query = Project::query();
-        $query->with(['user.department','centralFundingAgencies', 'stateFundingAgencies', 'financialProgresses',
-            'order.construction.area', 'order.construction.department', 'order.reports.physicalProgress']);
+        $query->with([
+            'user.department', 'centralFundingAgencies', 'stateFundingAgencies', 'financialProgresses',
+            'order.construction.area', 'order.construction.department', 'order.reports.physicalProgress'
+        ]);
         $project = $query->findOrFail($id)->toArray();
-//        dd($project);
+        //        dd($project);
         $date = Carbon::now("UTC +05:30");
         $date->addMinute(330);
         $project['projectid'] = $project['order']['construction']['id'];
@@ -202,16 +203,20 @@ class OrderController extends Controller
             $report['year'] = $date->format('Y');
             $report['photos'] = array($report['image1'], $report['image2'], $report['image3'], $report['image4']);
             switch ($date->quarter) {
-                case 1: $report['quarter'] = '4th Quarter';
+                case 1:
+                    $report['quarter'] = '4th Quarter';
                     $report['quarter_sub'] = '(Jan - March)';
                     break;
-                case 2: $report['quarter'] = '1st Quarter';
+                case 2:
+                    $report['quarter'] = '1st Quarter';
                     $report['quarter_sub'] = '(April - June)';
                     break;
-                case 3: $report['quarter'] = '2nd Quarter';
+                case 3:
+                    $report['quarter'] = '2nd Quarter';
                     $report['quarter_sub'] = '(July - Sept)';
                     break;
-                case 4: $report['quarter'] = '3rd Quarter';
+                case 4:
+                    $report['quarter'] = '3rd Quarter';
                     $report['quarter_sub'] = '(Oct - Dec)';
                     break;
             }
@@ -221,8 +226,8 @@ class OrderController extends Controller
         $physical = 0;
         $financial = 0;
         foreach ($project['order']['reports'] as $report) {
-            $physical_percent =(int) $report['physical_progress']['physical_percent'];
-            $financial_percent =(int) $report['physical_progress']['financial_percent'] ;
+            $physical_percent = (int) $report['physical_progress']['physical_percent'];
+            $financial_percent = (int) $report['physical_progress']['financial_percent'];
             if ($physical_percent >= $physical) {
                 $physical = $report['physical_progress']['physical_percent'];
             } else {
@@ -240,12 +245,13 @@ class OrderController extends Controller
         $project['PROJECT_DATE'] = $projectDate->toDateTimeString();
         $project['lat_dms'] = $this->latDECtoDMS($project['latitude']);
         $project['lng_dms'] = $this->lngDECtoDMS($project['longitude']);
-//        return view('pdf.summary-report', $project);
+        // return view('pdf.summary-report', $project);
         $pdf = PDF::loadView('pdf.summary-report', $project);
         return $pdf->download("Project-Report-MIS.pdf");
     }
 
-    public function mapPhysical($report) {
+    public function mapPhysical($report)
+    {
         return $report;
     }
 
@@ -266,7 +272,8 @@ class OrderController extends Controller
         $minutes = floor($seconds / 60);
         $seconds = number_format($seconds - ($minutes * 60), 3);
 
-        return sprintf('%s%s° %s\' %s" %s',
+        return sprintf(
+            '%s%s° %s\' %s" %s',
             $latitudeNotation,
             $degrees,
             $minutes,
@@ -292,7 +299,8 @@ class OrderController extends Controller
         $minutes = floor($seconds / 60);
         $seconds = number_format($seconds - ($minutes * 60), 3);
 
-        return sprintf('%s%s° %s\' %s" %s',
+        return sprintf(
+            '%s%s° %s\' %s" %s',
             $longitudeNotation,
             $degrees,
             $minutes,

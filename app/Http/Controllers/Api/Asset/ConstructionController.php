@@ -12,6 +12,7 @@ use App\Models\Asset\Order;
 use App\Models\Asset\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConstructionController extends ApiServiceController
 {
@@ -26,11 +27,11 @@ class ConstructionController extends ApiServiceController
         } else {
             $ngoac = ['(', ')'];
         }
-        $str = strtoupper($type). $ngoac[0];
+        $str = strtoupper($type) . $ngoac[0];
         foreach ($coordinates as $each) {
             $str = $str . $each[0] . " " . $each[1] . ",";
         }
-        $str = rtrim($str,',');
+        $str = rtrim($str, ',');
         $str .= $ngoac[1];
 
         Construction::query()->where('id', $id)->update(['geom' => $str]);
@@ -62,11 +63,9 @@ class ConstructionController extends ApiServiceController
         if (!$user->hasRoles([2])) {
             if (isset($user->department_id)) {
                 $query->where('department_id', '=', $user->department_id);
-
             } else {
                 $query->whereHas('orders.reports', function ($q) use ($user) {
                     $q->where('user_id', '=', $user->id);
-
                 });
             }
         }
@@ -95,11 +94,11 @@ class ConstructionController extends ApiServiceController
         }
         if (isset($from_date)) {
             $fromDate = Carbon::parse($from_date);
-//            $fromDate->startOfDay();
+            //            $fromDate->startOfDay();
         }
         if (isset($to_date)) {
             $toDate = Carbon::parse($to_date);
-//            $toDate->endOfDay();
+            //            $toDate->endOfDay();
         }
         if (isset($fromDate) && isset($toDate)) {
             $query->whereBetween('created_at', array($fromDate, $toDate));
@@ -110,7 +109,7 @@ class ConstructionController extends ApiServiceController
             }
         } else if ($user->hasRole(6)) {
             $query->where('department_id', '=', $user->department_id);
-        }else if ($user->hasRole(2)) {
+        } else if ($user->hasRole(2)) {
             $query->where('department_id', '=', $user->department_id);
         } else if ($user->hasRole(4)) {
             if (isset($department_id)) {
@@ -144,6 +143,7 @@ class ConstructionController extends ApiServiceController
             $query->whereYear('created_at', $year);
         }
 
+
         $query->whereHas('area', function ($q) use ($district, $circle) {
             if (isset($district) && $district !== '') {
                 $q->where('dist_name', '=', $district);
@@ -160,7 +160,7 @@ class ConstructionController extends ApiServiceController
             $query->with(['department', 'orders.reports', 'funding_agency', 'area']);
         } else if ($load_type === 'dashboard') {
             $query->with(['orders.reports']);
-        }else if ($load_type === 'lazy') {
+        } else if ($load_type === 'lazy') {
             $query->select('id', 'latitude', 'longitude', 'funding_agency_id');
         }
 
@@ -169,7 +169,10 @@ class ConstructionController extends ApiServiceController
 
     public function show($id)
     {
-        $query = Construction::query();
+        // $query = Construction::query();
+        // $query->with(['department', 'orders.reports', 'funding_agency', 'area']);
+
+        $query = Construction::query()->select('*', DB::raw("ST_AsGeoJSON(geom) as geom"));
         $query->with(['department', 'orders.reports', 'funding_agency', 'area']);
         return response()->json($query->findOrFail($id));
     }
@@ -217,7 +220,6 @@ class ConstructionController extends ApiServiceController
                 'message' => 'The location: ' . $lat . '- ' . $lng . ' without Arunachal Pradesh area. Please choose other location!'
             ], 404);
         }
-
     }
 
     public function reverseGeocodeNew(Request $request)
@@ -237,7 +239,6 @@ class ConstructionController extends ApiServiceController
                 'message' => 'The location: ' . $lat . '- ' . $lng . ' without Arunachal Pradesh area. Please choose other location!'
             ], 404);
         }
-
     }
 
     public function appVersion()
@@ -256,7 +257,7 @@ class ConstructionController extends ApiServiceController
                         $q->where('id', '>', 0);
                     } else if ($user->hasRole(2)) {
                         $q->where('department_id', '=', $user->department_id);
-                    }else if ($user->hasRole(6)) {
+                    } else if ($user->hasRole(6)) {
                         $q->where('department_id', '=', $user->department_id);
                     } else if ($user->hasRole(4)) {
                         $q->whereHas('area', function ($q1) use ($user) {
@@ -269,5 +270,4 @@ class ConstructionController extends ApiServiceController
             ->get();
         return response()->json($groups, 200);
     }
-
 }

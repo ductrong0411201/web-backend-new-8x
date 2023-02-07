@@ -1,2 +1,5 @@
+Sitemap: https://arunachalmonitoring.com/sitemap.xml
 User-agent: *
-Disallow:
+Disallow: /fonts/
+Disallow: /img/
+Disallow: /static/
