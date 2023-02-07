@@ -201,7 +201,7 @@ class ConstructionController extends ApiServiceController
     {
         return response()->json(Block::query()->where('dist_name', '=', $district)->orderBy('block_name', 'asc')->get());
     }
-
+//
 
     public function reverseGeocode(Request $request)
     {
